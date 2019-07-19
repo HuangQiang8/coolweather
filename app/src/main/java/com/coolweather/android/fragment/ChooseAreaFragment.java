@@ -1,8 +1,8 @@
-package com.coolweather.android.Fragment;
+package com.coolweather.android.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -71,19 +71,21 @@ public class ChooseAreaFragment extends Fragment {
      */
     private int currentLevel;
 
+    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_area, container, false);
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataList);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -107,7 +109,7 @@ public class ChooseAreaFragment extends Fragment {
                 }
             }
         });
-        super.onActivityCreated(savedInstanceState);
+        queryProvinces();
     }
 
     /**
@@ -148,7 +150,7 @@ public class ChooseAreaFragment extends Fragment {
             }
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
-            String address = "http://goulin.tech/api/china/ " + provinceCode;
+            String address = "http://guolin.tech/api/china/ " + provinceCode;
             queryFromServer(address, "city");
         }
     }
@@ -159,7 +161,7 @@ public class ChooseAreaFragment extends Fragment {
     private void queryCounties() {
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
-        countyList = DataSupport.where("cityid = ?", String.valueOf(selectedCity.getCityCode())).find(County.class);
+        countyList = DataSupport.where("cityid = ?", String.valueOf(selectedCity.getId())).find(County.class);
         if (countyList.size() > 0) {
             dataList.clear();
             for (County county : countyList) {
@@ -171,7 +173,7 @@ public class ChooseAreaFragment extends Fragment {
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
-            String address = "http://goulin.tech/api/china/" + provinceCode + "/" + cityCode;
+            String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
             queryFromServer(address, "county");
         }
     }
@@ -218,12 +220,11 @@ public class ChooseAreaFragment extends Fragment {
             public void onFailure(Call call, IOException e) {
                 //通过runOnUiThread()方法回到主线程处理逻辑
                 getActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("NewApi")
                     @Override
                     public void run() {
                         closeProgressDialog();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Toast.makeText(getContext(), "加载失败", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

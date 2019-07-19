@@ -65,7 +65,7 @@ public class Utility {
         if(!TextUtils.isEmpty(response)){
             try {
                 JSONArray allCountys = new JSONArray(response);
-                for(int i = 0 ; i< response.length(); i++){
+                for(int i = 0;i< allCountys.length();i++){
                     JSONObject countyObject = allCountys.getJSONObject(i);
                     County county = new County();
                     county.setCountyName(countyObject.getString("name"));
@@ -73,11 +73,12 @@ public class Utility {
                     county.setWeatherId(countyObject.getString("weather_id"));
                     county.save();//数据库添加数据
                 }
-                return  true;
+                return true;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return false;
     }
+
 }
