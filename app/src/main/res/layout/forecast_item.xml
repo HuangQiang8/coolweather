@@ -16,16 +16,20 @@
         android:text="xxxx"
         android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/info_txt"
+    <FrameLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:text="xx"
+        android:layout_height="match_parent"
         android:gravity="right"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+
     <TextView
         android:id="@+id/max_txt"
         android:layout_width="0dp"
