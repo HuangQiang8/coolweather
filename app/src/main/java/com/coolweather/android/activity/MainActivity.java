@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SQLiteStudioService.instance().start(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if(preferences.getString("weahter",null) !=null ){
+        if(preferences.getString("weather",null) !=null ){
             Intent intent = new Intent(this,WeatherActivity.class);
             startActivity(intent);
             finish();
